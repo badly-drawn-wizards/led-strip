@@ -1,0 +1,6 @@
+Device PIC16F1825
+Set poweroptions.powerenable true
+Set voltagevalue 3.3
+Set system.disableerrormsg "true"
+Hwtool PICkit3 -p
+Program dist/main.cof
