@@ -7,7 +7,7 @@ LINKER_OPTS = -L-pbigram=BIGRAM
 CC		= xc8 --chip=$(CHIP) $(INCLUDE_OPTS)
 
 
-C_FILES		= main.c
+C_FILES		= main.c spi.c enc28j60.c ws2812.c
 P1_FILES	= $(patsubst %.c,dist/%.p1,$(C_FILES))
 
 test:
