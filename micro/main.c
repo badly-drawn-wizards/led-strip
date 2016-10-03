@@ -9,7 +9,7 @@
 #pragma config WDTE = OFF
 
 #define LEDS 20
-#define LED_PIN LATCbits.LATC2
+#define LED_PIN LATCbits.LATC4
 
 inline uint8_t uabs(uint8_t x, uint8_t offset) {
   return x < offset ? offset-x : x-offset;
