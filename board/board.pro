@@ -1,4 +1,4 @@
-update=Fri 30 Sep 2016 09:04:41 PM SAST
+update=Sat 01 Oct 2016 10:31:03 PM SAST
 version=1
 last_client=kicad
 [pcbnew]
@@ -59,3 +59,4 @@ LibName27=atmel
 LibName28=contrib
 LibName29=valves
 LibName30=components/pic16f1825
+LibName31=components/magjack

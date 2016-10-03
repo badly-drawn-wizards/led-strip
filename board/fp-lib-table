@@ -1,0 +1,3 @@
+(fp_lib_table
+  (lib (name magjack)(type KiCad)(uri "$(KIPRJMOD)/magjack.pretty")(options "")(descr ""))
+)
