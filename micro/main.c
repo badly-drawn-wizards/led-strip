@@ -102,7 +102,7 @@ void process_packet() {
   // Copy packet payload
   LG_ARR_PART(colors, colors_part, colors_part_size, {
       if(length > 0) {
-        enc_rbm(colors_part, colors_part_size);
+        enc_rbm(colors_part, length < colors_part_size ? length : colors_part_size);
       }
       length = colors_part_size > length ? 0 : length - colors_part_size;
   });
