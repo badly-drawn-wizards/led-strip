@@ -94,7 +94,7 @@ void process_packet() {
   enc_rbm(status_and_header, STATUS_AND_HEADER_LENGTH);
 
   // Extract the length
-  uint16_t length = *((uint16_t *)(status_and_header + 16));
+  uint16_t length = *((uint16_t *)(status_and_header + 18));
 
   // Extract the next packet pointer
   packet = *((uint16_t *)status_and_header);
