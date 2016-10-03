@@ -21,6 +21,11 @@ inline uint8_t triangle(uint16_t height, uint16_t half_period, uint16_t x) {
 
 LG_ARR_DECL(colors, 3*LEDS, 3)
 
+void init_leds() {
+  TRISCbits.TRISC4 = 0;
+  LATCbits.LATC4 = 0;
+}
+
 void send_leds() {
   LG_ARR_LOOP(colors, colors, 1, {
       SEND_BYTE(LED_PIN, colors[i]);
@@ -125,9 +130,8 @@ int main() {
 
   init_spi();
   init_ethernet();
+  init_leds();
 
-  TRISCbits.TRISC4 = 0;
-  LATCbits.LATC4 = 1;
   while (1) {
     receive_colors();
     send_leds();
