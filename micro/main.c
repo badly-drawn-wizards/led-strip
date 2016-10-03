@@ -8,7 +8,7 @@
 
 #pragma config WDTE = OFF
 
-#define LEDS 20
+#define LEDS 120
 #define LED_PIN LATCbits.LATC4
 
 inline uint8_t uabs(uint8_t x, uint8_t offset) {
@@ -21,10 +21,11 @@ inline uint8_t triangle(uint16_t height, uint16_t half_period, uint16_t x) {
 
 LG_ARR_DECL(colors, 3*LEDS, 3)
 
-void send_colors() {
+void send_leds() {
   LG_ARR_LOOP(colors, colors, 1, {
       SEND_BYTE(LED_PIN, colors[i]);
   })
+  latch_color();
 }
 
 uint8_t MAC_ADDR[6] = {0x01, 0x02, 0x03, 0x04, 0x05, 0x06};
@@ -118,31 +119,26 @@ void receive_colors() {
 
 
 int main() {
+  // 16 Mhz clock
   OSCCONbits.SCS = 0b10;
   OSCCONbits.IRCF = 0b1111;
 
-  __delay_ms(100);
-
   init_spi();
-  /* init_ethernet(); */
+  init_ethernet();
 
   TRISCbits.TRISC4 = 0;
   LATCbits.LATC4 = 1;
   while (1) {
-    enc_bfs(ENC_ECON1, 0b11000000);
-    uint8_t val = enc_rcr(ENC_ECON1);
-    if(val > 0) LATCbits.LATC4 = 0;
-  /*   receive_colors(); */
-  /*   send_colors(); */
-  /*   latch_color(); */
+    receive_colors();
+    send_leds();
   }
 }
 
 void interrupt ISR() {
-  if(INTCONbits.INTE) {
+  if(INTCONbits.INTF) {
     process_packet();
     enc_bfc(ENC_ESTAT, ENC_ESTAT_INT);
     receiving_colors = 0;
-    INTCONbits.INTE = 0;
+    INTCONbits.INTF = 0;
   }
 }
