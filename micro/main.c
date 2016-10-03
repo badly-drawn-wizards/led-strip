@@ -36,10 +36,6 @@ void send_leds() {
 uint8_t MAC_ADDR[6] = {0x01, 0x02, 0x03, 0x04, 0x05, 0x06};
 
 void init_ethernet() {
-  // Configure interrupt pin
-  INTCONbits.INTE = 1;
-  TRISAbits.TRISA2 = 1;
-
   // Set rx buffer limits
   enc_wcr(ENC_ERXSTL, 0);
   enc_wcr(ENC_ERXSTH, 0);
@@ -50,6 +46,8 @@ void init_ethernet() {
   enc_wcr(ENC_ERXFCON, ENC_ERXFCON_UCEN);
 
   // Enable interrupts when a packet is received
+  INTCONbits.INTE = 1;
+  TRISAbits.TRISA2 = 1;
   enc_bfs(ENC_EIE, ENC_EIE_PKIE | ENC_EIE_INTIE);
 
   // Poll the oscillator start-up timer
