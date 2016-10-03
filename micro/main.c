@@ -60,7 +60,7 @@ void init_ethernet() {
   // Half-duplex mode
   enc_bfc(ENC_MACON3, ENC_MACON3_FULDPX);
 
-  // Set MAMXFL (1518 bytes)
+  // Set max frame length (1518 bytes)
   enc_wcr(ENC_MAMXFLL, 0xEE);
   enc_wcr(ENC_MAMXFLH, 0x05);
 
