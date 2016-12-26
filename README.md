@@ -5,8 +5,8 @@ communication. The communication is one-way with raw ethernet frames (Yay! It's 
 project has three parts
 
 - Host controller code in __micro__
-- A daemon to listen to a pulseaudio monitor and send the visualization to the led-strip device with a hard-coded MAC address.
-- A _completely untested_ board design for the device. I'll return to it someday. Maybe.
+- A __daemon__ to listen to a pulseaudio monitor and send the visualization to the led-strip device with a hard-coded MAC address.
+- A _completely untested_ __board__ design for the device. I'll return to it someday. Maybe.
 
 # Demo #
 [In this YouTube video](https://youtu.be/0CW2xSNjpUU) is a demonstration of a breadboard prototype.
