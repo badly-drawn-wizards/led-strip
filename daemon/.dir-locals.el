@@ -1,1 +1,1 @@
-((c-mode . ((flycheck-clang-include-path . (".")))))
+((c-mode . ((eval . (setq flycheck-clang-include-path `(,(file-name-directory (dir-locals-find-file "."))))))))
