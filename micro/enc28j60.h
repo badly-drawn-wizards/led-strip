@@ -1,5 +1,6 @@
 #include <xc.h>
 #include <spi.h>
+#include <timing.h>
 
 #ifndef _ENC28J60_H_
 #define _ENC28J69_H_
@@ -138,7 +139,20 @@ UNBANKED_REG(ESTAT, 0x1D)
 UNBANKED_REG(ECON2, 0x1E)
 UNBANKED_REG(ECON1, 0x1F)
 
+#define ENC_PHCON1 0x00
+#define ENC_PHSTAT1 0x01
+#define ENC_PHID1 0x02
+#define ENC_PHID2 0x03
+#define ENC_PHCON2 0x10
+#define ENC_PHSTAT2 0x11
+#define ENC_PHIE 0x12
+#define ENC_PHIR 0x13
+#define ENC_PHLCON 0x14
+
+#define ENC_PHSTAT2_PLRITY ((uint16_t)1 << 5)
+
 #define ENC_ECON1_RXEN (1 << 2)
+#define ENC_ECON2_PKTDEC (1 << 6)
 
 #define ENC_EIE_INTIE (1 << 7)
 #define ENC_EIE_PKIE (1 << 6)
@@ -153,6 +167,9 @@ UNBANKED_REG(ECON1, 0x1F)
 
 #define ENC_ERXFCON_UCEN (1 << 7)
 
+#define ENC_MICMD_MIIRD (1 << 0)
+#define ENC_MISTAT_BUSY (1 << 0)
+
 void enc_bank_sel(enc_register reg);
 void enc_bfs(enc_register reg, uint8_t val);
 void enc_bfc(enc_register reg, uint8_t val);
@@ -160,6 +177,8 @@ uint8_t enc_rcr(enc_register reg);
 void enc_wcr(enc_register reg, uint8_t val);
 void enc_rbm(uint8_t *rx, uint8_t len);
 void enc_wbm(uint8_t *tx, uint8_t len);
+uint16_t enc_rphy(uint8_t phreg);
+void enc_wphy(uint8_t phreg, uint16_t val);
 void enc_src();
 
 #endif

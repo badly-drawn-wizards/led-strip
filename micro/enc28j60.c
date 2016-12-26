@@ -19,6 +19,7 @@ void enc_bank_sel(enc_register reg) {
   if(reg.banked && curr_bank != reg.bank) {
     enc_bfs_helper(ENC_ECON1, reg.bank & 0b11);
     enc_bfc_helper(ENC_ECON1, ~reg.bank & 0b11);
+    curr_bank = reg.bank;
   }
 }
 
@@ -59,7 +60,10 @@ void enc_bfc(enc_register reg, uint8_t val) {
 
 void enc_rbm(uint8_t *rx, uint8_t len) {
   uint8_t tx_init = ENC_OP_RBM;
-  send_spi(&tx_init, 1, rx, len);
+  set_cs(0);
+  send_spi_raw(&tx_init, 1, 0, 0);
+  send_spi_raw(0, 0, rx, len);
+  set_cs(1);
 }
 
 void enc_wbm(uint8_t *tx, uint8_t len) {
@@ -73,4 +77,27 @@ void enc_wbm(uint8_t *tx, uint8_t len) {
 void enc_src() {
   uint8_t tx_init = ENC_OP_SRC;
   send_spi(&tx_init, 1, 0, 0);
+  // Errata B7.1
+  __delay_ms(1);
+}
+
+void enc_wphy(uint8_t phreg, uint16_t val) {
+  enc_wcr(ENC_MIREGADR, phreg);
+  uint8_t *val_bytes = (uint8_t *)&val;
+  enc_wcr(ENC_MIWRL, val_bytes[0]);
+  enc_wcr(ENC_MIWRH, val_bytes[1]);
+  __delay_us(11);
+  while(enc_rcr(ENC_MISTAT) & ENC_MISTAT_BUSY);
+}
+
+uint16_t enc_rphy(uint8_t phreg) {
+  enc_wcr(ENC_MIREGADR, phreg);
+  enc_bfs(ENC_MICMD, ENC_MICMD_MIIRD);
+  __delay_us(11);
+  while(enc_rcr(ENC_MISTAT) & ENC_MISTAT_BUSY);
+  uint16_t res;
+  uint8_t *res_bytes = (uint8_t *)&res;
+  res_bytes[0] = enc_rcr(ENC_MIRDL);
+  res_bytes[1] = enc_rcr(ENC_MIRDH);
+  return res;
 }
